@@ -1,4 +1,5 @@
-# Автотесты для UI ( веб-приложения Stellar Burgers)
+# Диплом
+## Задание 3: Автотесты для UI (сервис https://stellarburgers.education-services.ru)
 
 ## Структура проекта
 * locators/ - Локаторы элементов
