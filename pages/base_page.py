@@ -24,7 +24,7 @@ class BasePage:
             
             print(f"Элемент не найден: {locator}, пробую альтернативы...")
             
-            # Сохраняем скриншот для отладки
+            # Сохраняем скриншот 
             timestamp = time.strftime("%Y%m%d_%H%M%S")
             self.driver.save_screenshot(f"debug_{timestamp}.png")
             
@@ -35,7 +35,7 @@ class BasePage:
                 
                 if hasattr(self.locators_class, alt_locator_name):
                     alt_locator = getattr(self.locators_class, alt_locator_name)
-                    print(f"Пробую альтернативный локатор: {alt_locator}")
+                    print(f"альтернативный локатор: {alt_locator}")
                     try:
                         return WebDriverWait(self.driver, 5).until(
                             EC.visibility_of_element_located(alt_locator)
