@@ -28,12 +28,12 @@
 
 pip install -r requirements.txt
 
-* Тесты в Chrome
-pytest tests/ -v --browser=chrome
+###Тесты в Chrome
+* pytest tests/ -v --browser=chrome
 
-* Тесты в Firefox
-pytest tests/ -v --browser=firefox
+#### Тесты в Firefox
+* pytest tests/ -v --browser=firefox
 
-* С Allure отчетом
-pytest tests/ -v --alluredir=allure-results
-allure serve allure-results
+#### С Allure отчетом
+* pytest tests/ -v --alluredir=allure-results
+
