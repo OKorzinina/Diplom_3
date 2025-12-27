@@ -28,7 +28,7 @@
 ```bash
 pip install -r requirements.txt
 
-#Тесты в Chrome
+# Тесты в Chrome
 pytest tests/ -v --browser=chrome
 
 # Тесты в Firefox
