@@ -11,7 +11,6 @@
 
 
 
-
 Тестируемые функции
 1. Основная функциональность:
    - Переход по клику на "Конструктор"
@@ -28,3 +27,13 @@
 ## Установка
 ```bash
 pip install -r requirements.txt
+
+#Тесты в Chrome
+pytest tests/ -v --browser=chrome
+
+# Тесты в Firefox
+pytest tests/ -v --browser=firefox
+
+# С Allure отчетом
+pytest tests/ -v --alluredir=allure-results
+allure serve allure-results
