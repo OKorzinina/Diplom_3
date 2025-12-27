@@ -1,0 +1,5 @@
+Поиск элемента: ('xpath', "//p[text()='Конструктор']/parent::a")
+Поиск элемента: ('xpath', "//p[text()='Флюоресцентная булка R2-D3']")
+Поиск элемента: ('xpath', "//div[contains(@class, 'Modal_modal__')]//button[contains(@class, 'Modal_close__')]")
+Элемент не найден: ('xpath', "//div[contains(@class, 'Modal_modal__')]//button[contains(@class, 'Modal_close__')]"), пробую альтернативы...
+Не удалось закрыть стандартным способом: Element ('xpath', "//div[contains(@class, 'Modal_modal__')]//button[contains(@class, 'Modal_close__')]") not found after 10 seconds

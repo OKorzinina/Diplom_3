@@ -1,9 +1,11 @@
+
 import pytest
 import allure
 import time
 from pages.main_page import MainPage
 from pages.order_page import OrderPage
 from pages.auth_page import AuthPage
+from locators.order_page_locators import OrderPageLocators
 
 
 @allure.feature("Лента заказов")
@@ -20,12 +22,22 @@ class TestOrderFeed:
         
         with allure.step("2. Проверить отображение счетчика 'Выполнено за всё время'"):
             total_count = order_page.get_total_orders_count()
-            assert total_count >= 0, "Счетчик 'Выполнено за всё время' некорректен"
+            # Проверяем, что значение можно преобразовать в число
+            try:
+                total_int = int(total_count)
+                assert total_int >= 0, f"Счетчик 'Выполнено за всё время' некорректен: {total_count}"
+            except ValueError:
+                assert total_count.isdigit(), f"Счетчик 'Выполнено за всё время' не содержит число: {total_count}"
             allure.attach(str(total_count), name="total_orders", attachment_type=allure.attachment_type.TEXT)
         
         with allure.step("3. Проверить отображение счетчика 'Выполнено за сегодня'"):
             today_count = order_page.get_today_orders_count()
-            assert today_count >= 0, "Счетчик 'Выполнено за сегодня' некорректен"
+            # Проверяем, что значение можно преобразовать в число
+            try:
+                today_int = int(today_count)
+                assert today_int >= 0, f"Счетчик 'Выполнено за сегодня' некорректен: {today_count}"
+            except ValueError:
+                assert today_count.isdigit(), f"Счетчик 'Выполнено за сегодня' не содержит число: {today_count}"
             allure.attach(str(today_count), name="today_orders", attachment_type=allure.attachment_type.TEXT)
     
     @allure.title("Тест 8: Открытие деталей заказа в ленте")
@@ -37,12 +49,14 @@ class TestOrderFeed:
             order_page.open()
         
         with allure.step("2. Проверить наличие заказов"):
-            if order_page.is_element_present(OrderPage.ORDER_CARDS):
+            if order_page.is_element_present(OrderPageLocators.ORDER_CARDS):
                 with allure.step("3. Кликнуть на первый заказ"):
                     order_page.click_order(0)
                     
                 with allure.step("4. Проверить открытие модального окна"):
-                    assert order_page.is_element_present(OrderPage.ORDER_MODAL), "Модальное окно заказа не открылось"
+                    # Проверяем, что модальное окно открылось
+                    
+                    assert order_page.is_modal_open(), "Модальное окно заказа не открылось"
                     
                 with allure.step("5. Получить номер заказа"):
                     order_number = order_page.get_modal_order_number()
@@ -51,6 +65,9 @@ class TestOrderFeed:
                     
                 with allure.step("6. Закрыть модальное окно"):
                     order_page.close_order_modal()
+                    
+                with allure.step("7. Проверить закрытие модального окна"):
+                    assert not order_page.is_modal_open(), "Модальное окно не закрылось"
             else:
                 pytest.skip("Нет доступных заказов для тестирования")
     
@@ -63,7 +80,7 @@ class TestOrderFeed:
             order_page.open()
         
         with allure.step("2. Проверить наличие раздела 'В работе'"):
-            if order_page.has_orders_in_progress():
+            if order_page.is_element_present(OrderPageLocators.IN_PROGRESS_SECTION):
                 with allure.step("3. Получить заказы в работе"):
                     orders = order_page.get_orders_in_progress()
                     assert len(orders) > 0, "Нет заказов в работе"
@@ -87,6 +104,7 @@ class TestOrderFeed:
         
         with allure.step("3. Оформить новый заказ (имитация через время)"):
             
+            
             time.sleep(3)
         
         with allure.step("4. Обновить страницу"):
@@ -96,12 +114,21 @@ class TestOrderFeed:
             new_total = order_page.get_total_orders_count()
             new_today = order_page.get_today_orders_count()
             
-            # Ожидаем увеличение счетчиков
-            assert new_total >= initial_total, f"Счетчик 'за всё время' не увеличился: {initial_total} -> {new_total}"
-            assert new_today >= initial_today, f"Счетчик 'за сегодня' не увеличился: {initial_today} -> {new_today}"
-            
-            allure.attach(
-                f"До: всего={initial_total}, сегодня={initial_today}\nПосле: всего={new_total}, сегодня={new_today}",
-                name="counters_comparison",
-                attachment_type=allure.attachment_type.TEXT
-            )
+            # Преобразуем в числа для сравнения
+            try:
+                init_total_int = int(initial_total)
+                init_today_int = int(initial_today)
+                new_total_int = int(new_total)
+                new_today_int = int(new_today)
+                
+                # Ожидаем увеличение счетчиков
+                assert new_total_int >= init_total_int, f"Счетчик 'за всё время' не увеличился: {initial_total} -> {new_total}"
+                assert new_today_int >= init_today_int, f"Счетчик 'за сегодня' не увеличился: {initial_today} -> {new_today}"
+                
+                allure.attach(
+                    f"До: всего={initial_total}, сегодня={initial_today}\nПосле: всего={new_total}, сегодня={new_today}",
+                    name="counters_comparison",
+                    attachment_type=allure.attachment_type.TEXT
+                )
+            except ValueError:
+                pytest.fail(f"Невозможно преобразовать счетчики в числа: всего={initial_total}/{new_total}, сегодня={initial_today}/{new_today}")

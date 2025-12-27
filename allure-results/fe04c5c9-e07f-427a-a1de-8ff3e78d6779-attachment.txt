@@ -1,0 +1,3 @@
+Поиск элемента: ('xpath', "//h1[contains(@class, 'text_type_main-large') and text()='Лента заказов']")
+Поиск элемента: ('xpath', "//p[text()='Выполнено за все время:']/following-sibling::p[contains(@class, 'digits-large')]")
+Поиск элемента: ('xpath', "//p[text()='Выполнено за сегодня:']/following-sibling::p[contains(@class, 'digits-large')]")

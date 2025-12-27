@@ -1,28 +1,34 @@
+
 from selenium.webdriver.common.by import By
 
 
 class OrderPageLocators:
     # Заголовок
-    ORDER_FEED_TITLE = (By.XPATH, "//h1[text()='Лента заказов']")
+    ORDER_FEED_TITLE = (By.XPATH, "//h1[contains(@class, 'text_type_main-large') and text()='Лента заказов']")
     
-    # Счетчики
-    TOTAL_ORDERS = (By.XPATH, "//p[text()='Выполнено за всё время:']/following-sibling::p")
-    TODAY_ORDERS = (By.XPATH, "//p[text()='Выполнено за сегодня:']/following-sibling::p")
+    # Счетчики (обратите внимание: "за все время", а не "за всё время")
+    TOTAL_ORDERS = (By.XPATH, "//p[text()='Выполнено за все время:']/following-sibling::p[contains(@class, 'digits-large')]")
+    TODAY_ORDERS = (By.XPATH, "//p[text()='Выполнено за сегодня:']/following-sibling::p[contains(@class, 'digits-large')]")
     
     # Секции заказов
-    ORDERS_IN_PROGRESS = (By.XPATH, "//ul[contains(@class, 'OrderFeed_orderListReady__')]//li")
-    ORDERS_DONE = (By.XPATH, "//ul[contains(@class, 'OrderFeed_orderList__')]//li")
+    IN_PROGRESS_SECTION = (By.XPATH, "//div[contains(@class, 'OrderFeed_ordersData__1L6Iv')]//p[text()='В работе:']/following-sibling::ul")
+    DONE_SECTION = (By.XPATH, "//div[contains(@class, 'OrderFeed_ordersData__1L6Iv')]//p[text()='Готовы:']/following-sibling::ul")
+    
+    # Заказы в работе
+    ORDERS_IN_PROGRESS = (By.XPATH, "//div[contains(@class, 'OrderFeed_ordersData__1L6Iv')]//p[text()='В работе:']/following-sibling::ul//li")
+    ORDERS_DONE = (By.XPATH, "//div[contains(@class, 'OrderFeed_ordersData__1L6Iv')]//p[text()='Готовы:']/following-sibling::ul//li")
     
     # Карточки заказов
-    ORDER_CARDS = (By.XPATH, "//div[contains(@class, 'OrderHistory_card__') or contains(@class, 'OrderFeed_order__')]")
-    ORDER_NUMBER = (By.XPATH, ".//p[contains(@class, 'OrderHistory_number__')]")
-    ORDER_STATUS = (By.XPATH, ".//p[contains(@class, 'OrderHistory_status__')]")
+    ORDER_CARDS = (By.XPATH, "//div[contains(@class, 'OrderHistory_link__')]")
+    ORDER_NUMBER = (By.XPATH, ".//p[contains(@class, 'digits-default')]")
+    ORDER_STATUS = (By.XPATH, ".//p[contains(@class, 'text_type_main-default')]")
     
-    # Модальное окно заказа в ленте
+    # Модальное окно заказа
     ORDER_MODAL = (By.XPATH, "//div[contains(@class, 'Modal_modal__')]")
-    MODAL_ORDER_NUMBER = (By.XPATH, "//h2[contains(@class, 'Modal_title__')]")
-    MODAL_ORDER_STATUS = (By.XPATH, "//p[contains(@class, 'Modal_status__')]")
+    MODAL_ORDER_NUMBER = (By.XPATH, "//div[contains(@class, 'Modal_modal__')]//h2[contains(@class, 'digits-large')]")
+    MODAL_ORDER_STATUS = (By.XPATH, "//div[contains(@class, 'Modal_modal__')]//p[contains(@class, 'text_type_main-default')]")
     
-    # Статистика
-    IN_PROGRESS_SECTION = (By.XPATH, "//div[contains(@class, 'OrderFeed_inProgress__')]")
-    DONE_SECTION = (By.XPATH, "//div[contains(@class, 'OrderFeed_done__')]")
+    # Альтернативные локаторы 
+    ORDER_FEED_TITLE_ALT = (By.XPATH, "//h1[@class='text text_type_main-large mt-10 mb-5']")
+    TOTAL_ORDERS_ALT = (By.XPATH, "//p[@class='text text_type_main-medium' and text()='Выполнено за все время:']/following-sibling::p")
+    TODAY_ORDERS_ALT = (By.XPATH, "//p[@class='text text_type_main-medium' and text()='Выполнено за сегодня:']/following-sibling::p")
