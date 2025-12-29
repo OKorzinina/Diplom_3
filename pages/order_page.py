@@ -8,7 +8,7 @@ from urls import Urls
 
 
 class OrderPage(BasePage):
-    # Добавляем ссылку на класс локаторов
+    
     locators_class = OrderPageLocators
     
     @allure.step("Открыть ленту заказов")

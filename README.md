@@ -7,33 +7,18 @@
 * tests/ - Наборы тестов
 * generators.py - Генераторы тестовых данных
 * urls.py - URL приложения
+* allure-results
 
+#### Установка
 
-
-
-Тестируемые функции
-1. Основная функциональность:
-   - Переход по клику на "Конструктор"
-   - Переход по клику на "Лента заказов"
-   - Клик на ингредиент (открытие модального окна)
-   - Закрытие модального окна
-   - Увеличение счетчика ингредиента
-
-2. Лента заказов:
-   - Счетчик "Выполнено за всё время"
-   - Счетчик "Выполнено за сегодня"
-   - Номер заказа в разделе "В работе"
-
-## Установка
-```bash
 pip install -r requirements.txt
 
-# Тесты в Chrome
-pytest tests/ -v --browser=chrome
+#### Тесты в Chrome
+* pytest tests/ -v --browser=chrome
 
-# Тесты в Firefox
-pytest tests/ -v --browser=firefox
+#### Тесты в Firefox
+* pytest tests/ -v --browser=firefox
 
-# С Allure отчетом
-pytest tests/ -v --alluredir=allure-results
-allure serve allure-results
+#### Allure отчет
+* pytest tests/ -v --alluredir=allure-results
+

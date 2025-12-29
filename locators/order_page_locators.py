@@ -6,7 +6,7 @@ class OrderPageLocators:
     # Заголовок
     ORDER_FEED_TITLE = (By.XPATH, "//h1[contains(@class, 'text_type_main-large') and text()='Лента заказов']")
     
-    # Счетчики (обратите внимание: "за все время", а не "за всё время")
+    # Счетчики 
     TOTAL_ORDERS = (By.XPATH, "//p[text()='Выполнено за все время:']/following-sibling::p[contains(@class, 'digits-large')]")
     TODAY_ORDERS = (By.XPATH, "//p[text()='Выполнено за сегодня:']/following-sibling::p[contains(@class, 'digits-large')]")
     
