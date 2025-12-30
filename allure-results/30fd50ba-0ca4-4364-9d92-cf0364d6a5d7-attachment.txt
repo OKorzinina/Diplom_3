@@ -1,3 +1,0 @@
-Поиск элемента: ('xpath', "//h1[contains(@class, 'text_type_main-large') and text()='Лента заказов']")
-Поиск элемента: ('xpath', "//div[contains(@class, 'OrderFeed_ordersData__1L6Iv')]//p[text()='В работе:']/following-sibling::ul")
-Поиск элементов: ('xpath', "//div[contains(@class, 'OrderFeed_ordersData__1L6Iv')]//p[text()='В работе:']/following-sibling::ul//li")

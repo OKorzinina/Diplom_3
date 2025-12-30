@@ -1,3 +1,0 @@
-Поиск элемента: ('xpath', "//h2[text()='Вход']")
-Поиск элемента: ('xpath', "//p[text()='Конструктор']/parent::a")
-Поиск элемента: ('xpath', "//section[contains(@class, 'BurgerConstructor_basket__29Cd7')]")
