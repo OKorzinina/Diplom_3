@@ -1,4 +1,3 @@
-
 import allure
 import pytest
 from pages.main_page import MainPage
@@ -10,7 +9,7 @@ class TestKeyFunctionality:
     @allure.title("Тест 1: Переход по клику на 'Конструктор' и 'Лента заказов'")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_navigation_between_constructor_and_order_feed(self, driver):
-        """Атомарный тест навигации"""
+        """Атомарный тест навигации БЕЗ ВЕТВЛЕНИЙ"""
         main_page = MainPage(driver)
 
         # 1. Открыть главную страницу
@@ -25,77 +24,102 @@ class TestKeyFunctionality:
     @allure.title("Тест 2: Открытие и закрытие модального окна ингредиента")
     @allure.severity(allure.severity_level.NORMAL)
     def test_ingredient_modal_open_and_close(self, driver):
-        """Линейный тест модального окна"""
+        """Линейный тест модального окна БЕЗ ВЕТВЛЕНИЙ"""
         main_page = MainPage(driver)
 
         # 1. Открыть главную страницу
         main_page.open()
 
-        # 2. Кликнуть на ингредиент
-        main_page.click_ingredient()
+        # 2. Кликнуть на ингредиент и дождаться открытия
+        main_page.click_ingredient_and_wait_modal()
 
-        # 3. Проверить что модальное окно открылось
-        assert main_page.is_modal_open(), \
-            "Модальное окно не открылось после клика на ингредиент"
-
-        # 4. Закрыть модальное окно основной кнопкой
-        main_page.close_modal()
-
-        # 5. Проверить что модальное окно закрылось
-        assert not main_page.is_modal_open(), \
-            "Модальное окно не закрылось после клика на кнопку закрытия"
+        # 3. Закрыть модальное окно основной кнопкой и дождаться закрытия
+        main_page.close_modal_and_wait()
     
     @allure.title("Тест 3: Закрытие модального окна через ESCAPE")
     @allure.severity(allure.severity_level.NORMAL)
     def test_ingredient_modal_close_with_escape(self, driver):
-        """Тест закрытия модального окна клавишей ESC"""
+        """Тест закрытия модального окна клавишей ESC БЕЗ ВЕТВЛЕНИЙ"""
         main_page = MainPage(driver)
 
         main_page.open()
-        main_page.click_ingredient()
-        main_page.close_modal_with_escape()
-        
-        assert not main_page.is_modal_open(), \
-            "Модальное окно не закрылось после нажатия ESCAPE"
+        main_page.click_ingredient_and_wait_modal()
+        main_page.close_modal_with_escape_and_wait()
     
     @allure.title("Тест 4: Закрытие модального окна альтернативной кнопкой")
     @allure.severity(allure.severity_level.NORMAL)
     def test_ingredient_modal_close_with_alt_button(self, driver):
-        """Тест закрытия модального окна альтернативной кнопкой"""
+        """Тест закрытия модального окна альтернативной кнопкой БЕЗ ВЕТВЛЕНИЙ"""
         main_page = MainPage(driver)
 
         main_page.open()
-        main_page.click_ingredient()
-        main_page.close_modal_with_alt_button()
-        
-        assert not main_page.is_modal_open(), \
-            "Модальное окно не закрылось после клика на альтернативную кнопку"
+        main_page.click_ingredient_and_wait_modal()
+        # ЛИНЕЙНЫЙ СЦЕНАРИЙ: если кнопки нет - тест ПАДАЕТ
+        main_page.close_modal_with_alt_button_and_wait()
     
-    @allure.title("Тест 5: Проверка счетчика ингредиента")
+    @allure.title("Тест 5: Проверка счетчика ингредиента при открытии")
     @allure.severity(allure.severity_level.NORMAL)
-    def test_ingredient_counter(self, driver):
-        """Тест счетчика ингредиента"""
+    def test_ingredient_counter_initial_state(self, driver):
+        """Тест начального состояния счетчика ингредиента БЕЗ ВЕТВЛЕНИЙ"""
         main_page = MainPage(driver)
 
         main_page.open()
         
-        # Счетчик должен быть 0 при открытии страницы
-        initial_counter = main_page.get_ingredient_counter()
-        assert initial_counter == 0, f"Начальный счетчик должен быть 0, а не {initial_counter}"
+        # ЛИНЕЙНЫЙ СЦЕНАРИЙ: если элемента счетчика нет - тест ПАДАЕТ
+        # Это показывает баг 
+        counter = main_page.get_ingredient_counter()
+        
+        # Простая проверка: счетчик должен быть 0
+        assert counter == 0, f"Начальный счетчик должен быть 0, а не {counter}"
     
     @allure.title("Тест 6: Добавление ингредиента через drag-and-drop")
     @allure.severity(allure.severity_level.NORMAL)
     def test_add_ingredient_by_drag_and_drop(self, driver):
-        """Линейный тест добавления ингредиента"""
+        """Линейный тест добавления ингредиента БЕЗ ВЕТВЛЕНИЙ"""
         main_page = MainPage(driver)
 
         main_page.open()
+        
+        # Получаем начальный счетчик (если элемента нет - тест падает)
         initial_counter = main_page.get_ingredient_counter()
-
-        # Добавить ингредиент
+        
+        # Добавляем ингредиент (если не получается - тест падает)
         main_page.drag_ingredient_to_constructor()
         
-        # Проверить что счетчик изменился
-        new_counter = main_page.get_ingredient_counter()
-        assert new_counter > initial_counter, \
-            f"Счетчик не увеличился после добавления ингредиента: было {initial_counter}, стало {new_counter}"
+        # Проверяем что счетчик увеличился (если не увеличился - тест падает)
+        main_page.verify_counter_increased(initial_counter)
+    
+    @allure.title("Тест 7: Проверка ленты заказов")
+    @allure.severity(allure.severity_level.CRITICAL)
+    def test_order_feed_basic_functionality(self, driver):
+        """Базовый тест ленты заказов БЕЗ ВЕТВЛЕНИЙ"""
+        main_page = MainPage(driver)
+        order_page = OrderPage(driver)
+
+        main_page.open()
+        
+        # Перейти в ленту заказов
+        main_page.click_order_feed()
+        
+        # Дождаться появления карточек заказов
+        order_page.wait_for_order_cards_visible()
+        
+        # Раздел "В работе" должен быть виден
+        order_page.wait_for_in_progress_section_visible()
+    
+    @allure.title("Тест 8: Работа с модальным окном заказа")
+    @allure.severity(allure.severity_level.CRITICAL)
+    def test_order_modal_functionality(self, driver):
+        """Тест модального окна заказа БЕЗ ВЕТВЛЕНИЙ"""
+        main_page = MainPage(driver)
+        order_page = OrderPage(driver)
+
+        main_page.open()
+        main_page.click_order_feed()
+        order_page.wait_for_order_cards_visible()
+        
+        # Открываем модальное окно заказа
+        order_page.click_first_order_card_and_wait_modal()
+        
+        # Закрываем модальное окно
+        order_page.close_order_modal_and_wait()
