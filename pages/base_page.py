@@ -31,6 +31,17 @@ class BasePage:
             self.take_screenshot("element_not_found")
             raise
     
+    def find_elements(self, locator, timeout=10):
+        """Найти все элементы с ожиданием"""
+        with allure.step(f"Найти все элементы по локатору: {locator}"):
+            try:
+                return WebDriverWait(self.driver, timeout).until(
+                    EC.presence_of_all_elements_located(locator)
+                )
+            except TimeoutException:
+                self.take_screenshot("elements_not_found")
+                raise
+    
     def wait_for_visible(self, locator, timeout=10):
         """Ожидать видимости элемента"""
         try:
