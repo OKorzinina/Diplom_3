@@ -1,10 +1,8 @@
-  
 import allure
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import TimeoutException
 
 
 class BasePage:
@@ -23,54 +21,34 @@ class BasePage:
     
     def find_element(self, locator, timeout=10):
         """Найти элемент с ожиданием"""
-        try:
-            return WebDriverWait(self.driver, timeout).until(
-                EC.presence_of_element_located(locator)
-            )
-        except TimeoutException:
-            self.take_screenshot("element_not_found")
-            raise
+        return WebDriverWait(self.driver, timeout).until(
+            EC.presence_of_element_located(locator)
+        )
     
     def find_elements(self, locator, timeout=10):
         """Найти все элементы с ожиданием"""
         with allure.step(f"Найти все элементы по локатору: {locator}"):
-            try:
-                return WebDriverWait(self.driver, timeout).until(
-                    EC.presence_of_all_elements_located(locator)
-                )
-            except TimeoutException:
-                self.take_screenshot("elements_not_found")
-                raise
+            return WebDriverWait(self.driver, timeout).until(
+                EC.presence_of_all_elements_located(locator)
+            )
     
     def wait_for_visible(self, locator, timeout=10):
         """Ожидать видимости элемента"""
-        try:
-            return WebDriverWait(self.driver, timeout).until(
-                EC.visibility_of_element_located(locator)
-            )
-        except TimeoutException:
-            self.take_screenshot("element_not_visible")
-            raise
+        return WebDriverWait(self.driver, timeout).until(
+            EC.visibility_of_element_located(locator)
+        )
     
     def wait_for_invisible(self, locator, timeout=10):
         """Ожидать исчезновения элемента"""
-        try:
-            return WebDriverWait(self.driver, timeout).until(
-                EC.invisibility_of_element_located(locator)
-            )
-        except TimeoutException:
-            self.take_screenshot("element_still_visible")
-            raise
+        return WebDriverWait(self.driver, timeout).until(
+            EC.invisibility_of_element_located(locator)
+        )
     
     def wait_for_element_to_be_clickable(self, locator, timeout=10):
         """Ожидать кликабельности элемента"""
-        try:
-            return WebDriverWait(self.driver, timeout).until(
-                EC.element_to_be_clickable(locator)
-            )
-        except TimeoutException:
-            self.take_screenshot("element_not_clickable")
-            raise
+        return WebDriverWait(self.driver, timeout).until(
+            EC.element_to_be_clickable(locator)
+        )
     
     def click(self, locator, timeout=10):
         """Кликнуть по элементу с ожиданием кликабельности"""
@@ -82,26 +60,6 @@ class BasePage:
         """Получить текст элемента"""
         element = self.wait_for_visible(locator, timeout)
         return element.text.strip()
-    
-    def is_element_present(self, locator, timeout=5):
-        """Проверить наличие элемента"""
-        try:
-            WebDriverWait(self.driver, timeout).until(
-                EC.presence_of_element_located(locator)
-            )
-            return True
-        except TimeoutException:
-            return False
-    
-    def is_element_visible(self, locator, timeout=5):
-        """Проверить видимость элемента"""
-        try:
-            WebDriverWait(self.driver, timeout).until(
-                EC.visibility_of_element_located(locator)
-            )
-            return True
-        except TimeoutException:
-            return False
     
     def wait_for_page_load(self, timeout=10):
         """Ожидание полной загрузки страницы"""
@@ -138,10 +96,19 @@ class BasePage:
     
     def wait_for_condition(self, condition, timeout=10, message=""):
         """Ожидание кастомного условия"""
+        return WebDriverWait(self.driver, timeout).until(condition)
+    
+    def send_keys(self, locator, text, timeout=10):
+        """Ввести текст в элемент"""
+        with allure.step(f"Ввести текст в элемент {locator}: {text}"):
+            element = self.wait_for_visible(locator, timeout)
+            element.clear()
+            element.send_keys(text)
+    
+    ##
+    def find_element_with_timeout(self, locator, timeout=10):
+        """Найти элемент с ожиданием Возвращает элемент или None если не найден """
         try:
-            return WebDriverWait(self.driver, timeout).until(condition)
-        except TimeoutException:
-            self.take_screenshot("condition_timeout")
-            if message:
-                raise TimeoutException(message)
-            raise
+            return self.wait_for_presence(locator, timeout)
+        except:
+            return None
