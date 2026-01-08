@@ -95,3 +95,12 @@ class MainPage(BasePage):
                 f"было {initial_counter}, стало {new_counter}"
             )
         return new_counter
+    
+
+    @allure.step("Кликнуть на ингредиент и дождаться открытия модального окна")
+    def click_ingredient_and_wait_modal(self):
+        """Линейный сценарий: клик → должно открыться"""
+    # Используем JavaScript клик для обхода перекрытия
+        element = self.wait_for_element_to_be_clickable(MainPageLocators.FLUORESCENT_BUN)
+        self.driver.execute_script("arguments[0].click();", element)
+        self.wait_for_visible(MainPageLocators.INGREDIENT_MODAL, timeout=5)
