@@ -3,6 +3,9 @@ import pytest
 from pages.main_page import MainPage
 from pages.order_page import OrderPage
 
+ # asserts добавлены в тестах, где их не было, 
+ # и там, где можно было их добавить без изменения логики тестов,
+ # а также, чтобы не нарушать замечания, которые были ранее 
 
 class TestKeyFunctionality:
     
