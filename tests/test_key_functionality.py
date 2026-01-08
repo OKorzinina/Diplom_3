@@ -17,11 +17,11 @@ class TestKeyFunctionality:
 
         # 2. Перейти в ленту заказов
         main_page.click_order_feed()
-        assert "feed" in driver.current_url, "Не перешли в ленту заказов"  # ← добавлен
+        assert "feed" in driver.current_url, "Не перешли в ленту заказов"  # добавлен
 
         # 3. Вернуться в конструктор
         main_page.click_constructor()
-        assert "stellarburgers" in driver.current_url, "Не вернулись в конструктор"  # ← добавлен
+        assert "stellarburgers" in driver.current_url, "Не вернулись в конструктор"  # добавлен
     
     @allure.title("Тест 2: Открытие и закрытие модального окна ингредиента")
     @allure.severity(allure.severity_level.NORMAL)
