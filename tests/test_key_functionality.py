@@ -17,9 +17,11 @@ class TestKeyFunctionality:
 
         # 2. Перейти в ленту заказов
         main_page.click_order_feed()
+        assert "feed" in driver.current_url, "Не перешли в ленту заказов"  # ← добавлен
 
         # 3. Вернуться в конструктор
         main_page.click_constructor()
+        assert "stellarburgers" in driver.current_url, "Не вернулись в конструктор"  # ← добавлен
     
     @allure.title("Тест 2: Открытие и закрытие модального окна ингредиента")
     @allure.severity(allure.severity_level.NORMAL)
@@ -29,6 +31,7 @@ class TestKeyFunctionality:
 
         # 1. Открыть главную страницу
         main_page.open()
+        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"  # добавлен
 
         # 2. Кликнуть на ингредиент и дождаться открытия
         main_page.click_ingredient_and_wait_modal()
@@ -43,6 +46,8 @@ class TestKeyFunctionality:
         main_page = MainPage(driver)
 
         main_page.open()
+        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"  # добавлен
+        
         main_page.click_ingredient_and_wait_modal()
         main_page.close_modal_with_escape_and_wait()
     
@@ -53,6 +58,8 @@ class TestKeyFunctionality:
         main_page = MainPage(driver)
 
         main_page.open()
+        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"  # добавлен
+        
         main_page.click_ingredient_and_wait_modal()
         # ЛИНЕЙНЫЙ СЦЕНАРИЙ: если кнопки нет - тест ПАДАЕТ
         main_page.close_modal_with_alt_button_and_wait()
@@ -64,13 +71,14 @@ class TestKeyFunctionality:
         main_page = MainPage(driver)
 
         main_page.open()
+        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"  # добавлен
         
         # ЛИНЕЙНЫЙ СЦЕНАРИЙ: если элемента счетчика нет - тест ПАДАЕТ
-        # Это показывает баг 
         counter = main_page.get_ingredient_counter()
         
         # Простая проверка: счетчик должен быть 0
         assert counter == 0, f"Начальный счетчик должен быть 0, а не {counter}"
+        assert isinstance(counter, int), f"Счетчик должен быть целым числом, а не {type(counter)}"  # добавлен
     
     @allure.title("Тест 6: Добавление ингредиента через drag-and-drop")
     @allure.severity(allure.severity_level.NORMAL)
@@ -79,6 +87,7 @@ class TestKeyFunctionality:
         main_page = MainPage(driver)
 
         main_page.open()
+        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"  # добавлен
         
         # Получаем начальный счетчик (если элемента нет - тест падает)
         initial_counter = main_page.get_ingredient_counter()
@@ -88,6 +97,10 @@ class TestKeyFunctionality:
         
         # Проверяем что счетчик увеличился (если не увеличился - тест падает)
         main_page.verify_counter_increased(initial_counter)
+        
+        # Дополнительная проверка что счетчик стал больше 0
+        new_counter = main_page.get_ingredient_counter()
+        assert new_counter > 0, f"Счетчик должен быть больше 0 после добавления, а равен {new_counter}"  # ← ДОБАВЛЕН
     
     @allure.title("Тест 7: Проверка ленты заказов")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -97,9 +110,11 @@ class TestKeyFunctionality:
         order_page = OrderPage(driver)
 
         main_page.open()
+        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"  # добавлен
         
         # Перейти в ленту заказов
         main_page.click_order_feed()
+        assert "feed" in driver.current_url, "Не перешли в ленту заказов"  # добавлен
         
         # Дождаться появления карточек заказов
         order_page.wait_for_order_cards_visible()
@@ -115,7 +130,11 @@ class TestKeyFunctionality:
         order_page = OrderPage(driver)
 
         main_page.open()
+        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"  # добавлен
+        
         main_page.click_order_feed()
+        assert "feed" in driver.current_url, "Не перешли в ленту заказов"  # добавлен
+        
         order_page.wait_for_order_cards_visible()
         
         # Открываем модальное окно заказа
@@ -123,3 +142,6 @@ class TestKeyFunctionality:
         
         # Закрываем модальное окно
         order_page.close_order_modal_and_wait()
+        
+        # Проверка что остались в ленте заказов после закрытия модалки
+        assert "feed" in driver.current_url, "Не остались в ленте заказов после закрытия модалки"  # добавлен
