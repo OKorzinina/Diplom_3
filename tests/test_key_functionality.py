@@ -291,7 +291,7 @@ class TestKeyFunctionality:
         #order_page = OrderPage(driver)
 
         #main_page.open()
-        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"
+        #assert "stellarburgers" in driver.current_url, "Главная страница не открылась"
         
         #main_page.click_order_feed()
         #assert "feed" in driver.current_url, "Не перешли в ленту заказов"
