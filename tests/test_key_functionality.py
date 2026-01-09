@@ -35,11 +35,11 @@ class TestKeyFunctionality:
 
         # 2. Кликнуть на ингредиент и дождаться открытия
         main_page.click_ingredient_and_wait_modal()
-        assert main_page.is_modal_open(), "Модальное окно ингредиента не открылось"  # ДОБАВЛЕНО
+        assert main_page.is_modal_open(), "Модальное окно ингредиента не открылось"  # ← ДОБАВЛЕНО
         
         # 3. Закрыть модальное окно основной кнопкой и дождаться закрытия
         main_page.close_modal_and_wait()
-        assert main_page.is_modal_closed(), "Модальное окно ингредиента не закрылось"  # ДОБАВЛЕНО
+        assert main_page.is_modal_closed(), "Модальное окно ингредиента не закрылось"  # ← ДОБАВЛЕНО
     
     @allure.title("Тест 3: Закрытие модального окна через ESCAPE")
     @allure.severity(allure.severity_level.NORMAL)
@@ -51,10 +51,10 @@ class TestKeyFunctionality:
         assert "stellarburgers" in driver.current_url, "Главная страница не открылась"
         
         main_page.click_ingredient_and_wait_modal()
-        assert main_page.is_modal_open(), "Модальное окно не открылось перед нажатием ESC"  # ДОБАВЛЕНО
+        assert main_page.is_modal_open(), "Модальное окно не открылось перед нажатием ESC"  # ← ДОБАВЛЕНО
         
         main_page.close_modal_with_escape_and_wait()
-        assert main_page.is_modal_closed(), "Модальное окно не закрылось после нажатия ESC"  # ДОБАВЛЕНО
+        assert main_page.is_modal_closed(), "Модальное окно не закрылось после нажатия ESC"  # ← ДОБАВЛЕНО
     
     @allure.title("Тест 4: Закрытие модального окна альтернативной кнопкой")
     @allure.severity(allure.severity_level.NORMAL)
@@ -66,11 +66,11 @@ class TestKeyFunctionality:
         assert "stellarburgers" in driver.current_url, "Главная страница не открылась"
         
         main_page.click_ingredient_and_wait_modal()
-        assert main_page.is_modal_open(), "Модальное окно не открыто перед закрытием альтернативной кнопкой"  # ДОБАВЛЕНО
+        assert main_page.is_modal_open(), "Модальное окно не открыто перед закрытием альтернативной кнопкой"  # ← ДОБАВЛЕНО
         
         # ЛИНЕЙНЫЙ СЦЕНАРИЙ: если кнопки нет - тест ПАДАЕТ
         main_page.close_modal_with_alt_button_and_wait()
-        assert main_page.is_modal_closed(), "Модальное окно не закрылось альтернативной кнопкой"  # ДОБАВЛЕНО
+        assert main_page.is_modal_closed(), "Модальное окно не закрылось альтернативной кнопкой"  # ← ДОБАВЛЕНО
     
     @allure.title("Тест 5: Проверка счетчика ингредиента при открытии")
     @allure.severity(allure.severity_level.NORMAL)
@@ -148,11 +148,11 @@ class TestKeyFunctionality:
         
         # Открываем модальное окно заказа
         order_page.click_first_order_card_and_wait_modal()
-        assert order_page.is_order_modal_open(), "Модальное окно заказа не открылось"  # ДОБАВЛЕНО
+        assert order_page.is_order_modal_open(), "Модальное окно заказа не открылось"  # ← ДОБАВЛЕНО
         
         # Закрываем модальное окно
         order_page.close_order_modal_and_wait()
-        assert order_page.is_order_modal_closed(), "Модальное окно заказа не закрылось"  # ДОБАВЛЕНО
+        assert order_page.is_order_modal_closed(), "Модальное окно заказа не закрылось"  # ← ДОБАВЛЕНО
         
         # Проверка что остались в ленте заказов после закрытия модалки
         assert "feed" in driver.current_url, "Не остались в ленте заказов после закрытия модалки"
