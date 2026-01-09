@@ -58,15 +58,15 @@ class MainPage(BasePage):
     @allure.step("Закрыть модальное окно альтернативной кнопкой")
     def close_modal_with_alt_button_and_wait(self):
         """Линейный сценарий: клик → должно закрыться, если кнопки нет - тест падает"""
-        # ПРЯМОЙ КЛИК БЕЗ ПРЕДВАРИТЕЛЬНЫХ ПРОВЕРОК
         
+        # Если кнопки нет - TimeoutException и тест падает
         self.click(MainPageLocators.MODAL_CLOSE_BUTTON_ALT)
         self.wait_for_invisible(MainPageLocators.INGREDIENT_MODAL, timeout=5)
     
     @allure.step("Получить счетчик ингредиента")
     def get_ingredient_counter(self):
         """Получить значение счетчика ингредиента - ЛИНЕЙНАЯ ВЕРСИЯ БЕЗ ВЕТВЛЕНИЙ"""
-        # Находим элемент счетчика 
+        # Находим элемент счетчика - если его нет, вызовет исключение
         element = self.find_element(MainPageLocators.INGREDIENT_COUNTER)
         counter_text = element.text
         numbers = re.findall(r'\d+', counter_text)
@@ -96,7 +96,6 @@ class MainPage(BasePage):
             )
         return new_counter
     
-
     @allure.step("Кликнуть на ингредиент и дождаться открытия модального окна")
     def click_ingredient_and_wait_modal(self):
         """Линейный сценарий: клик → должно открыться"""
