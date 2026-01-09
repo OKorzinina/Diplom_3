@@ -18,6 +18,7 @@ class TestOrderFeed:
         main_page.click_order_feed()
         assert "feed" in driver.current_url, "Не перешли в ленту заказов"
         
+        # Метод сам генерирует исключение при таймауте
         order_page.wait_for_order_cards_visible()
     
     @allure.title("Тест: Карточки заказов в ленте")
@@ -32,6 +33,7 @@ class TestOrderFeed:
         main_page.click_order_feed()
         assert "feed" in driver.current_url, "Не перешли в ленту заказов"
 
+        # Метод сам генерирует исключение при таймауте
         order_page.wait_for_order_cards_visible()
     
     @allure.title("Тест: Открытие и закрытие модального окна заказа")
@@ -46,9 +48,11 @@ class TestOrderFeed:
         main_page.click_order_feed()
         assert "feed" in driver.current_url, "Не перешли в ленту заказов"
         
+        # Метод сам генерирует исключение при таймауте
         order_page.wait_for_order_cards_visible()
         
         # Кликаем на первую карточку
+        # Метод сам генерирует исключение при таймауте
         order_page.click_first_order_card_and_wait_modal()
         
         # Проверяем что остались в ленте заказов
@@ -72,6 +76,7 @@ class TestOrderFeed:
         main_page.click_order_feed()
         assert "feed" in driver.current_url, "Не перешли в ленту заказов"
 
+        # Метод сам генерирует исключение при таймауте
         order_page.wait_for_in_progress_section_visible()
     
     @allure.title("Тест: Обновление страницы")
@@ -86,6 +91,7 @@ class TestOrderFeed:
         main_page.click_order_feed()
         assert "feed" in driver.current_url, "Не перешли в ленту заказов"
         
+        # Метод сам генерирует исключение при таймауте
         order_page.wait_for_order_cards_visible()
         
         # Проверяем что находимся в ленте заказов до обновления
@@ -98,4 +104,5 @@ class TestOrderFeed:
         assert "feed" in driver.current_url, "Не остались в ленте заказов после обновления"
         
         # После обновления снова проверяем карточки
+        # Метод сам генерирует исключение при таймауте
         order_page.wait_for_order_cards_visible()
