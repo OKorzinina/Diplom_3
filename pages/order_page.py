@@ -3,7 +3,7 @@ from .base_page import BasePage
 from locators.order_page_locators import OrderPageLocators
 
 
-class OrderPage(BasePage): 
+class OrderPage(BasePage):  
     locators_class = OrderPageLocators
 
     @allure.step("Дождаться появления карточек заказов")
