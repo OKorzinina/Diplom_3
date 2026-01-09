@@ -46,3 +46,5 @@ class AuthPage(BasePage):
         if self.is_error_displayed():
             return self.get_text(AuthPageLocators.ERROR_MESSAGE)
         return ""
+    
+    
