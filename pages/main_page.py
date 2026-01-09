@@ -58,7 +58,7 @@ class MainPage(BasePage):
     @allure.step("Закрыть модальное окно альтернативной кнопкой")
     def close_modal_with_alt_button_and_wait(self):
         """Линейный сценарий: клик → должно закрыться, если кнопки нет - тест падает"""
-        
+        # ПРЯМОЙ КЛИК БЕЗ ПРЕДВАРИТЕЛЬНЫХ ПРОВЕРОК
         # Если кнопки нет - TimeoutException и тест падает
         self.click(MainPageLocators.MODAL_CLOSE_BUTTON_ALT)
         self.wait_for_invisible(MainPageLocators.INGREDIENT_MODAL, timeout=5)
