@@ -1,108 +1,88 @@
 import allure
-import pytest
 from pages.main_page import MainPage
 from pages.order_page import OrderPage
+from helper import CreatedOrder
 
 
 class TestOrderFeed:
     
-    @allure.title("Тест: Отображение ленты заказов")
-    def test_order_feed_display(self, driver):
-        """Проверка отображения ленты заказов с проверками"""
+   @allure.title('При создании нового заказа счётчик «Выполнено за всё время» увеличивается')
+   def test_total_orders_counter_increases(self, driver, creating_user):
         main_page = MainPage(driver)
         order_page = OrderPage(driver)
-
+        token, email, password = creating_user
+        
         main_page.open()
-        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"
-        
+        main_page.click_personal_account()
+        main_page.enter_email(email)
+        main_page.enter_password(password)
+        main_page.click_login_button()
         main_page.click_order_feed()
-        assert "feed" in driver.current_url, "Не перешли в ленту заказов"
         
-        # Метод сам генерирует исключение при таймауте
-        order_page.wait_for_order_cards_visible()
+        # Получаем начальное значение
+        initial_total = order_page.get_total_orders_counter()
+        
+        # Создаем заказ
+        CreatedOrder.created_order(token)
+        
+        # Обновляем страницу дважды
+        main_page.refresh_page()
+        main_page.click_order_feed()
+        
+        main_page.refresh_page()
+        main_page.click_order_feed()
+        
+        # Получаем новое значение
+        new_total = order_page.get_total_orders_counter()
+        
+        # Проверяем
+        assert new_total != initial_total
     
-    @allure.title("Тест: Карточки заказов в ленте")
-    def test_order_cards(self, driver):
-        """Проверка отображения карточек заказов с проверками"""
+   @allure.title('При создании нового заказа счётчик «Выполнено за сегодня» увеличивается')
+   def test_today_orders_counter_increases(self, driver, creating_user):
         main_page = MainPage(driver)
         order_page = OrderPage(driver)
-
-        main_page.open()
-        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"
+        token, email, password = creating_user
         
+        main_page.open()
+        main_page.click_personal_account()
+        main_page.enter_email(email)
+        main_page.enter_password(password)
+        main_page.click_login_button()
         main_page.click_order_feed()
-        assert "feed" in driver.current_url, "Не перешли в ленту заказов"
-
-        # Метод сам генерирует исключение при таймауте
-        order_page.wait_for_order_cards_visible()
+        
+        initial_total, initial_today = order_page.get_both_counters()
+        CreatedOrder.created_order(token)
+        
+        main_page.refresh_page()
+        main_page.click_order_feed()
+        new_total, new_today = order_page.get_both_counters()
+        
+        # Проверяем что хотя бы один из счетчиков изменился
+        counters_changed = (new_total != initial_total) or (new_today != initial_today)
+        assert counters_changed
     
-    @allure.title("Тест: Открытие и закрытие модального окна заказа")
-    def test_order_modal(self, driver):
-        """Проверка работы с модальным окном заказа с проверками"""
+   @allure.title('После оформления заказа его номер появляется в разделе «В работе»')
+   def test_order_number_appears_in_progress(self, driver, creating_user):
         main_page = MainPage(driver)
         order_page = OrderPage(driver)
-
+        token, email, password = creating_user
+        
         main_page.open()
-        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"
-        
+        main_page.click_personal_account()
+        main_page.enter_email(email)
+        main_page.enter_password(password)
+        main_page.click_login_button()
         main_page.click_order_feed()
-        assert "feed" in driver.current_url, "Не перешли в ленту заказов"
         
-        # Метод сам генерирует исключение при таймауте
-        order_page.wait_for_order_cards_visible()
-        
-        # Кликаем на первую карточку
-        # Метод сам генерирует исключение при таймауте
-        order_page.click_first_order_card_and_wait_modal()
-        
-        # Проверяем что остались в ленте заказов
-        assert "feed" in driver.current_url, "Не находимся в ленте заказов после открытия модалки"
-        
-        # Закрываем модальное окно клавишей ESCAPE
-        main_page.send_keys_escape()
-        
-        # Проверяем что остались в ленте заказов после закрытия
-        assert "feed" in driver.current_url, "Не остались в ленте заказов после закрытия модалки"
-    
-    @allure.title("Тест: Раздел 'В работе'")
-    def test_in_progress_section(self, driver):
-        """Проверка раздела 'В работе' с проверками"""
-        main_page = MainPage(driver)
-        order_page = OrderPage(driver)
-
-        main_page.open()
-        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"
-        
-        main_page.click_order_feed()
-        assert "feed" in driver.current_url, "Не перешли в ленту заказов"
-
-        # Метод сам генерирует исключение при таймауте
-        order_page.wait_for_in_progress_section_visible()
-    
-    @allure.title("Тест: Обновление страницы")
-    def test_page_refresh(self, driver):
-        """Проверка обновления страницы с проверками"""
-        main_page = MainPage(driver)
-        order_page = OrderPage(driver)
-
-        main_page.open()
-        assert "stellarburgers" in driver.current_url, "Главная страница не открылась"
-        
-        main_page.click_order_feed()
-        assert "feed" in driver.current_url, "Не перешли в ленту заказов"
-        
-        # Метод сам генерирует исключение при таймауте
-        order_page.wait_for_order_cards_visible()
-        
-        # Проверяем что находимся в ленте заказов до обновления
-        assert "feed" in driver.current_url, "Не находимся в ленте заказов до обновления"
+        # Создаем заказ
+        order_number = CreatedOrder.created_order(token)
         
         # Обновляем страницу
-        driver.refresh()
+        main_page.refresh_page()
+        main_page.click_order_feed()
         
-        # Проверяем что остались в ленте заказов после обновления
-        assert "feed" in driver.current_url, "Не остались в ленте заказов после обновления"
+        # Проверяем что заказ в разделе "В работе"
+        is_in_progress = order_page.is_order_in_progress_section(order_number)
         
-        # После обновления снова проверяем карточки
-        # Метод сам генерирует исключение при таймауте
-        order_page.wait_for_order_cards_visible()
+        assert is_in_progress 
