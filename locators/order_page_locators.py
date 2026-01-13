@@ -1,18 +1,24 @@
-
 from selenium.webdriver.common.by import By
 
 
 class OrderPageLocators:
-    # Основные элементы ленты заказов
-    ORDER_FEED_TITLE = (By.XPATH, "//h1[contains(text(), 'Лента заказов')]")
+    # Заголовок страницы
+    PAGE_HEADER = (By.XPATH, "//h1[text()='Лента заказов']")
     
-    # Карточки заказов
-    ORDER_CARDS = (By.XPATH, "//li[contains(@class, 'OrderHistory_listItem')] | //div[contains(@class, 'OrderCard_container')]")
+    # Счетчики 
+    TOTAL_ORDERS_COUNTER = (By.XPATH, "//p[contains(@class, 'digits')][contains(text(), '2')]")  
+    TODAY_ORDERS_COUNTER = (By.XPATH, "//p[contains(@class, 'digits')][contains(text(), '3')]")  
     
-    # Раздел "В работе"
-    IN_PROGRESS_SECTION = (By.XPATH, "//p[contains(text(), 'В работе:')] | //div[contains(text(), 'В работе:')]")
+    # Раздел "В работе" 
+    IN_PROGRESS_SECTION = (By.XPATH, "//*[contains(text(), 'В работе:')]")
     
-    # Модальное окно заказа
-    ORDER_MODAL = (By.XPATH, "//div[contains(@class, 'Modal_orderBox')]")
-    # Кнопка закрытия модального окна заказа
-    ORDER_MODAL_CLOSE = (By.XPATH, "//div[contains(@class, 'Modal_orderBox')]/button | //div[contains(@class, 'Modal_modal')]/button")
+    # Альтернативные локаторы для счетчиков
+    
+    ALL_DIGITS = (By.XPATH, "//p[contains(@class, 'digits')]")
+    
+    # Для теста "В работе" будем использовать родительский элемент
+    IN_PROGRESS_CONTAINER = (By.XPATH, "//*[contains(text(), 'В работе:')]/..")
+
+    # Доп локаторы:
+    IN_WORK_LIST = (By.XPATH, "//p[text()='В работе:']/following-sibling::ul[1]")
+    IN_WORK_ORDER_ITEMS = (By.XPATH, "//p[text()='В работе:']/following-sibling::ul[1]/li")
