@@ -1,6 +1,4 @@
 import allure
-import re
-from selenium.webdriver.common.by import By
 from .base_page import BasePage
 from locators.main_page_locators import MainPageLocators
 from urls import Urls
@@ -11,9 +9,8 @@ class MainPage(BasePage):
 
     @allure.step("Открыть главную страницу")
     def open(self):
-        self.open_url(Urls.BASE_URL)
+        self.driver.get(Urls.BASE_URL)
         self.wait_for_visible(MainPageLocators.CONSTRUCTOR_BUTTON, timeout=15)
-        return self
     
     @allure.step("Кликнуть на конструктор")
     def click_constructor(self):
@@ -23,83 +20,59 @@ class MainPage(BasePage):
     def click_order_feed(self):
         self.click(MainPageLocators.ORDER_FEED_BUTTON)
     
-    @allure.step("Кликнуть на ингредиент и дождаться открытия модального окна")
-    def click_ingredient_and_wait_modal(self):
-        """Линейный сценарий: клик → должно открыться"""
+    @allure.step("Кликнуть на ингредиент")
+    def click_ingredient(self):
         self.click(MainPageLocators.FLUORESCENT_BUN)
-        self.wait_for_visible(MainPageLocators.INGREDIENT_MODAL, timeout=5)
-    
-    @allure.step("Дождаться открытия модального окна ингредиента")
-    def wait_for_ingredient_modal_open(self):
-        """Ждем открытия модального окна - тест упадет если не откроется"""
-        self.wait_for_visible(MainPageLocators.INGREDIENT_MODAL, timeout=5)
-    
-    @allure.step("Дождаться закрытия модального окна ингредиента")
-    def wait_for_ingredient_modal_close(self):
-        """Ждем закрытия модального окна - тест упадет если не закроется"""
-        self.wait_for_invisible(MainPageLocators.INGREDIENT_MODAL, timeout=5)
     
     @allure.step("Получить заголовок модального окна")
     def get_modal_title(self):
         return self.get_text(MainPageLocators.MODAL_TITLE)
     
-    @allure.step("Закрыть модальное окно основной кнопкой")
-    def close_modal_and_wait(self):
-        """Линейный сценарий: клик → должно закрыться"""
+    @allure.step("Закрыть модальное окно")
+    def close_modal(self):
         self.click(MainPageLocators.MODAL_CLOSE_BUTTON)
-        self.wait_for_invisible(MainPageLocators.INGREDIENT_MODAL, timeout=5)
-    
-    @allure.step("Закрыть модальное окно через ESCAPE")
-    def close_modal_with_escape_and_wait(self):
-        """Линейный сценарий: ESC → должно закрыться"""
-        self.send_keys_escape()
-        self.wait_for_invisible(MainPageLocators.INGREDIENT_MODAL, timeout=5)
-    
-    @allure.step("Закрыть модальное окно альтернативной кнопкой")
-    def close_modal_with_alt_button_and_wait(self):
-        """Линейный сценарий: клик → должно закрыться, если кнопки нет - тест падает"""
-        # ПРЯМОЙ КЛИК БЕЗ ПРЕДВАРИТЕЛЬНЫХ ПРОВЕРОК
-        # Если кнопки нет - TimeoutException и тест падает
-        self.click(MainPageLocators.MODAL_CLOSE_BUTTON_ALT)
-        self.wait_for_invisible(MainPageLocators.INGREDIENT_MODAL, timeout=5)
     
     @allure.step("Получить счетчик ингредиента")
     def get_ingredient_counter(self):
-        """Получить значение счетчика ингредиента - ЛИНЕЙНАЯ ВЕРСИЯ БЕЗ ВЕТВЛЕНИЙ"""
-        # Находим элемент счетчика - если его нет, вызовет исключение
-        element = self.find_element(MainPageLocators.INGREDIENT_COUNTER)
-        counter_text = element.text
-        numbers = re.findall(r'\d+', counter_text)
-        return int(numbers[0]) if numbers else 0
-    
-    @allure.step("Дождаться появления счетчика ингредиента")
-    def wait_for_ingredient_counter_visible(self):
-        """Ждем появления счетчика - тест упадет если не появится"""
-        self.wait_for_visible(MainPageLocators.INGREDIENT_COUNTER, timeout=5)
+        return self.get_text(MainPageLocators.INGREDIENT_COUNTER)
     
     @allure.step("Перетащить ингредиент в конструктор")
     def drag_ingredient_to_constructor(self):
-        """Перетаскивание ингредиента - если не получается, тест падает"""
         self.drag_and_drop(
             MainPageLocators.FLUORESCENT_BUN,
             MainPageLocators.BUN_DROP_AREA
         )
     
-    @allure.step("Проверить что счетчик увеличился")
-    def verify_counter_increased(self, initial_counter):
-        """Линейная проверка: счетчик должен быть больше начального"""
-        new_counter = self.get_ingredient_counter()
-        if new_counter <= initial_counter:
-            raise AssertionError(
-                f"Счетчик не увеличился после добавления ингредиента: "
-                f"было {initial_counter}, стало {new_counter}"
-            )
-        return new_counter
+    @allure.step("Обновить страницу")
+    def refresh_page(self):
+        self.driver.refresh()
+        self.wait_for_visible(MainPageLocators.CONSTRUCTOR_BUTTON, timeout=10)
     
-    @allure.step("Кликнуть на ингредиент и дождаться открытия модального окна")
-    def click_ingredient_and_wait_modal(self):
-        """Линейный сценарий: клик → должно открыться"""
-    # Используем JavaScript клик для обхода перекрытия
-        element = self.wait_for_element_to_be_clickable(MainPageLocators.FLUORESCENT_BUN)
-        self.driver.execute_script("arguments[0].click();", element)
-        self.wait_for_visible(MainPageLocators.INGREDIENT_MODAL, timeout=5)
+    @allure.step("Кликнуть на личный кабинет")
+    def click_personal_account(self):
+        self.click(MainPageLocators.PERSONAL_ACCOUNT_BUTTON)
+    
+    @allure.step("Ввести email")
+    def enter_email(self, email):
+        self.input_text(MainPageLocators.EMAIL_FIELD, email)
+    
+    @allure.step("Ввести пароль")
+    def enter_password(self, password):
+        self.input_text(MainPageLocators.PASSWORD_FIELD, password)
+    
+    @allure.step("Нажать кнопку входа")
+    def click_login_button(self):
+        self.click(MainPageLocators.LOGIN_BUTTON)
+    
+    @allure.step("Получить текст кнопки конструктора")
+    def get_constructor_button_text(self):
+        return self.get_text(MainPageLocators.CONSTRUCTOR_BUTTON)
+    
+    @allure.step("Получить текст кнопки ленты заказов")
+    def get_order_feed_button_text(self):
+        return self.get_text(MainPageLocators.ORDER_FEED_BUTTON)
+    
+    @allure.step("Проверить видимость модального окна")
+    def is_modal_visible(self):
+        element = self.find_element(MainPageLocators.INGREDIENT_MODAL)
+        return element.is_displayed()
