@@ -1,4 +1,3 @@
-
 from selenium.webdriver.common.by import By
 
 
@@ -18,3 +17,5 @@ class AuthPageLocators:
     # Навигация
     CONSTRUCTOR_BUTTON = (By.XPATH, "//p[text()='Конструктор']")
     LOGO = (By.XPATH, "//div[contains(@class, 'logo')]")
+
+    
