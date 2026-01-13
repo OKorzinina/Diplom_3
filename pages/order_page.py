@@ -3,37 +3,54 @@ from .base_page import BasePage
 from locators.order_page_locators import OrderPageLocators
 
 
-class OrderPage(BasePage):  
-    locators_class = OrderPageLocators
+class OrderPage(BasePage):
+    
+    @allure.step("Дождаться загрузки страницы ленты заказов")
+    def wait_for_order_feed_loaded(self):
+        self.wait_for_visible(OrderPageLocators.PAGE_HEADER, timeout=10)
+    
+    @allure.step("Получить счетчик 'Выполнено за всё время'")
+    def get_total_orders_counter(self):
+        self.wait_for_order_feed_loaded()
+        return self.get_text(OrderPageLocators.TOTAL_ORDERS_COUNTER)
+    
+    @allure.step("Получить счетчик 'Выполнено за сегодня'")
+    def get_today_orders_counter(self):
+        self.wait_for_order_feed_loaded()
+        return self.get_text(OrderPageLocators.TODAY_ORDERS_COUNTER)
+    
+    @allure.step("Получить оба счетчика")
+    def get_both_counters(self):
+        self.wait_for_order_feed_loaded()
+        total = self.get_text(OrderPageLocators.TOTAL_ORDERS_COUNTER)
+        today = self.get_text(OrderPageLocators.TODAY_ORDERS_COUNTER)
+        return total, today
+    
+         
+    @allure.step("Проверить есть ли заказ в разделе 'В работе'")
+    def is_order_in_progress_section(self, order_number):
+        self.wait_for_order_feed_loaded()
+        
+        # Находим список заказов "В работе"
+        in_work_list = self.find_element(OrderPageLocators.IN_WORK_LIST)
+        
+        # Получаем весь текст списка
+        list_text = in_work_list.text
+        
+        # Убираем # из номера заказа
+        order_clean = order_number.replace('#', '')
+        
+        # Проверяем есть ли чистый номер в тексте
+        return order_clean in list_text
 
-    @allure.step("Дождаться появления карточек заказов")
-    def wait_for_order_cards_visible(self):
-        """Ждем карточки заказов - тест упадет если не появятся"""
-        self.wait_for_visible(OrderPageLocators.ORDER_CARDS, timeout=10)
-    
-    @allure.step("Кликнуть на первую карточку заказа и дождаться модального окна")
-    def click_first_order_card_and_wait_modal(self):
-        """Линейный сценарий: клик → должно открыться модальное окно"""
-        self.click(OrderPageLocators.ORDER_CARDS)
-        self.wait_for_visible(OrderPageLocators.ORDER_MODAL, timeout=5)
-    
-    @allure.step("Дождаться открытия модального окна заказа")
-    def wait_for_order_modal_open(self):
-        """Ждем открытия модального окна заказа - тест упадет если не откроется"""
-        self.wait_for_visible(OrderPageLocators.ORDER_MODAL, timeout=5)
-    
-    @allure.step("Дождаться закрытия модального окна заказа")
-    def wait_for_order_modal_close(self):
-        """Ждем закрытия модального окна заказа - тест упадет если не закроется"""
-        self.wait_for_invisible(OrderPageLocators.ORDER_MODAL, timeout=5)
-    
-    @allure.step("Закрыть модальное окно заказа")
-    def close_order_modal_and_wait(self):
-        """Линейный сценарий: клик → должно закрыться"""
-        self.click(OrderPageLocators.ORDER_MODAL_CLOSE)
-        self.wait_for_invisible(OrderPageLocators.ORDER_MODAL, timeout=5)
-    
-    @allure.step("Дождаться появления раздела 'В работе'")
-    def wait_for_in_progress_section_visible(self):
-        """Ждем раздел 'В работе' - тест упадет если не появится"""
-        self.wait_for_visible(OrderPageLocators.IN_PROGRESS_SECTION, timeout=10)
+    @allure.step("Получить все номера заказов из раздела 'В работе'")
+    def get_in_progress_order_numbers(self):
+        self.wait_for_order_feed_loaded()
+        
+        # Находим все элементы li в списке "В работе"
+        order_elements = self.find_elements(OrderPageLocators.IN_WORK_ORDER_ITEMS)
+        
+        # Извлекаем номера заказов 
+        order_numbers = [element.text.strip() for element in order_elements]
+        
+        return order_numbers   
