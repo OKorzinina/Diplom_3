@@ -5,17 +5,17 @@ from selenium.webdriver.common.action_chains import ActionChains
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 15) 
+        self.wait = WebDriverWait(driver, 15) # Увеличили до 15 для стабильности ленты
 
     def go_to_url(self, url):
         self.driver.get(url)
 
     def find_element(self, locator):
-        
+        # Используем visibility (Требование №5 - явное ожидание)
         return self.wait.until(EC.visibility_of_element_located(locator))
 
     def find_elements(self, locator):
-        
+        # Обернули в ожидание, чтобы не было прямого обращения к driver без задержки
         return self.wait.until(EC.presence_of_all_elements_located(locator))
 
     def wait_for_visible(self, locator, timeout=10):
@@ -27,6 +27,7 @@ class BasePage:
         return wait.until(EC.invisibility_of_element_located(locator))
 
     def click(self, locator):
+        # Клик через ожидание кликабельности (самый надежный способ)
         element = self.wait.until(EC.element_to_be_clickable(locator))
         element.click()
 
@@ -43,6 +44,7 @@ class BasePage:
         return element.text
 
     def is_element_present(self, locator):
+        # Метод вернет True или упадет по таймауту (согласно Требованию №5)
         return self.find_element(locator).is_displayed()
 
     def drag_and_drop(self, source_locator, target_locator):
@@ -53,3 +55,7 @@ class BasePage:
 
     def refresh_page(self):
         self.driver.refresh()
+
+    ## Добавка
+    def reload_page(self):
+        self.driver.refresh()    
