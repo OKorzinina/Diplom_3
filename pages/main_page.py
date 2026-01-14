@@ -39,9 +39,9 @@ class MainPage(BasePage):
         )
 
     @allure.step("Обновить страницу")
-    def refresh_page(self):
-        super().refresh_page()
-        self.wait_for_visible(MainPageLocators.CONSTRUCTOR_BUTTON, timeout=10)
+    def refresh(self):
+        self.reload_page()  
+        self.wait_for_visible(MainPageLocators.CONSTRUCTOR_BUTTON, timeout=10)     
 
     @allure.step("Получить текст кнопки конструктора")
     def get_constructor_button_text(self):
