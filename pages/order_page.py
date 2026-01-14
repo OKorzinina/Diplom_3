@@ -21,14 +21,10 @@ class OrderPage(BasePage):
         element = self.wait_for_visible(OrderPageLocators.TODAY_ORDERS_COUNTER)
         return element.text.strip()
 
-    
     @allure.step("Проверить, есть ли заказ {order_number} в разделе 'В работе'")
     def is_order_in_progress_section(self, order_number):
         clean_number = str(order_number).replace('#', '').strip()
         formatted_number = clean_number.zfill(6) 
-
-        # Динамический локатор
         dynamic_xpath = (By.XPATH, f"//ul[contains(@class, 'orderList')]//li[text()='{formatted_number}']")
-        # Используем метод базового класса вместо прямого обращения к driver
         element = self.wait_for_visible(dynamic_xpath, timeout=20)
-        return element.is_displayed()  
+        return element.is_displayed()
