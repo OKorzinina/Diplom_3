@@ -8,7 +8,6 @@ class MainPageLocators:
     INGREDIENT_COUNTER = (By.XPATH, "//p[contains(@class, 'counter')]")
     INGREDIENT_MODAL = (By.XPATH, "//div[contains(@class, 'Modal_modal')]")
     MODAL_TITLE = (By.XPATH, "//h2[contains(@class, 'Modal_title')]")
-    #MODAL_CLOSE_BUTTON = (By.XPATH, "//button[contains(@class, 'Modal_close')]")
     MODAL_CLOSE_BUTTON = (By.XPATH, "//button[@type='button' and contains(@class, 'close')]")
     # Локаторы для drag and drop
     BUN_DROP_AREA = (By.XPATH, "//div[contains(@class, 'BurgerConstructor_basket')]")
