@@ -7,6 +7,10 @@
 * tests/ - Наборы тестов
 * generators.py - Генераторы тестовых данных
 * urls.py - URL приложения
+* data.py
+* conftest.py
+* gitignore
+* helper.py
 * allure-results
 
 #### Установка
@@ -14,7 +18,7 @@
 pip install -r requirements.txt
 
 #### Тесты в Chrome
-* pytest tests/ -v --browser=chrome
+* pytest tests/ -v --browser=chrome 
 
 #### Тесты в Firefox
 * pytest tests/ -v --browser=firefox
