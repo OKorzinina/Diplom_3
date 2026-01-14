@@ -5,28 +5,29 @@ from selenium.webdriver.common.action_chains import ActionChains
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        self.wait = WebDriverWait(driver, 15) 
 
     def go_to_url(self, url):
         self.driver.get(url)
 
     def find_element(self, locator):
-        return self.wait.until(EC.presence_of_element_located(locator))
+        
+        return self.wait.until(EC.visibility_of_element_located(locator))
 
     def find_elements(self, locator):
-        return self.driver.find_elements(*locator)
+        
+        return self.wait.until(EC.presence_of_all_elements_located(locator))
 
     def wait_for_visible(self, locator, timeout=10):
         wait = WebDriverWait(self.driver, timeout)
         return wait.until(EC.visibility_of_element_located(locator))
 
-    
     def wait_for_invisibility(self, locator, timeout=10):
         wait = WebDriverWait(self.driver, timeout)
         return wait.until(EC.invisibility_of_element_located(locator))
 
     def click(self, locator):
-        element = self.find_element(locator)
+        element = self.wait.until(EC.element_to_be_clickable(locator))
         element.click()
 
     def input_text(self, locator, text):
