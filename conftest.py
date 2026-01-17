@@ -52,7 +52,7 @@ def creating_user():
 
     yield access_token, email, password
 
-    # Опционально: удаление пользователя после теста  
+    # Дополнительно: удаление пользователя после теста  
     requests.delete(
         "https://stellarburgers.education-services.ru/api/auth/user",
         headers={'Authorization': access_token}
