@@ -22,6 +22,7 @@ class AuthPage(BasePage):
     def click_login_button(self):
         self.click(AuthPageLocators.LOGIN_BUTTON)
 
+    
     @allure.step("Выполнить авторизацию")
     def login(self, email, password):
         self.wait_for_visible(AuthPageLocators.EMAIL_INPUT)
