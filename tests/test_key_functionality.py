@@ -30,7 +30,8 @@ class TestKeyFunctionality:
         main_page.open()
         main_page.click_ingredient()
         modal_visible = main_page.is_modal_visible()
-        assert modal_visible is True
+        #assert modal_visible is True
+        assert main_page.is_modal_visible()
 
     @allure.title("Всплывающее окно закрывается кликом по крестику")
     @allure.severity(allure.severity_level.NORMAL)
@@ -41,14 +42,14 @@ class TestKeyFunctionality:
         main_page.close_modal()
         modal_closed = main_page.is_modal_not_displayed()
         assert modal_closed 
-        
+
     @allure.title("Счетчик ингредиента увеличивается при добавлении в заказ")
     @allure.severity(allure.severity_level.NORMAL)
     def test_ingredient_counter_increases(self, driver):
         main_page = MainPage(driver)
         main_page.open()
 
-        # Получаем начальное значение 
+        # Получаем начальное значение (метод возвращает int)
         initial_counter = main_page.get_ingredient_counter()
 
         # Добавляем ингредиент
@@ -57,5 +58,5 @@ class TestKeyFunctionality:
         # Получаем новое значение
         new_counter = main_page.get_ingredient_counter()
 
-        # Счетчик увеличился ровно на 2 (так как булки добавляются по 2 шт сразу)
+        # Точная проверка: счетчик увеличился ровно на 2 (так как булки добавляются по 2 шт сразу)
         assert new_counter == initial_counter + 2
