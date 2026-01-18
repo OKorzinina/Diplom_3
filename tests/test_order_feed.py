@@ -39,7 +39,6 @@ class TestOrderFeed:
         final_total = order_page.get_total_orders_counter()
         assert final_total > initial_total
 
-    
     @allure.title('При создании нового заказа счётчик «Выполнено за сегодня» увеличивается')
     def test_today_orders_counter_increases(self, driver, creating_user):
         main_page = MainPage(driver)
@@ -47,71 +46,43 @@ class TestOrderFeed:
         auth_page = AuthPage(driver)
         _, email, password = creating_user
 
-        print("\n" + "="*60)
-        print("НАЧАЛО ТЕСТА: test_today_orders_counter_increases")
-        print("="*60)
-
         # Авторизация
         auth_page.open()
         auth_page.login(email, password)
 
         # 1. Получаем начальное значение счетчика
-        print("\nШаг 1: Получаем начальное значение счетчика")
         main_page.click_order_feed()
         order_page.wait_for_order_feed_loaded()
+        # Достаточно просто дождаться видимости счетчика и забрать текст
         initial_today = order_page.get_today_orders_counter()
-        print(f"Начальное значение счетчика: {initial_today}")
 
         # 2. Создаем новый заказ
-        print("\nШаг 2: Создаем новый заказ")
         main_page.click_constructor()
         main_page.drag_ingredient_to_constructor()
         main_page.click_make_order_button()
+
+        # Важно дождаться появления номера заказа, чтобы убедиться, что бэкенд его обработал
         main_page.wait_for_order_id_visible()
-        print("  - Заказ создан, модальное окно появилось")
         main_page.close_modal()
         main_page.wait_for_modal_closed()
-        print("  - Модальное окно закрыто")
 
-        # 3. Ждем увеличения счетчика
-        print("\nШаг 3: Переходим в ленту заказов")
+        # 3. Переходим в ленту заказов и проверяем счетчик
         main_page.click_order_feed()
+
+        # Ждем загрузки ленты (внутри этого метода должно быть ожидание видимости элементов)
         order_page.wait_for_order_feed_loaded()
-        print("  - Лента заказов загружена")
-        
-        # Проверяем счетчик сразу после загрузки
-        current_after_load = order_page.get_today_orders_counter()
-        print(f"  - Счетчик после загрузки: {current_after_load}")
-        print(f"  - Разница: {current_after_load - initial_today}")
 
-        print("\nШаг 4: Обновляем страницу")
-        # Используем метод Page Object для обновления страницы
-        order_page.refresh_page()
-        print("  - Страница обновлена")
-        
-        # Проверяем счетчик после обновления
-        current_after_refresh = order_page.get_today_orders_counter()
-        print(f"  - Счетчик после обновления: {current_after_refresh}")
-        print(f"  - Разница: {current_after_refresh - initial_today}")
-
-        print("\nШаг 5: Ждем увеличения счетчика")
-        # Ждем увеличения счетчика
-        #order_page.wait_for_today_counter_to_increase(initial_today)
-        order_page.wait_for_today_counter_to_change(initial_today)
-
-        # Получаем конечное значение счетчика
+        # Просто считываем новое значение
         final_today = order_page.get_today_orders_counter()
-        print(f"\nФинальное значение счетчика: {final_today}")
-        print(f"Начальное значение: {initial_today}")
-        print(f"Увеличение на: {final_today - initial_today}")
-        
+
         # Проверяем увеличение
-        print(f"\nПроверка assert: {final_today} > {initial_today} = {final_today > initial_today}")
-        assert final_today > initial_today
-        
-        print("\n" + "="*60)
-        print("ТЕСТ УСПЕШНО ЗАВЕРШЕН")
-        print("="*60)
+        assert final_today > initial_today, \
+            f"Счетчик не увеличился! Было: {initial_today}, стало: {final_today}"
+
+
+
+
+    
 
     
 

@@ -7,7 +7,7 @@ class BasePage:
     @allure.step("Инициализация драйвера и ожиданий")
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 15)
+        self.wait = WebDriverWait(driver, 20)
 
     @allure.step("Переход по URL: {url}")
     def go_to_url(self, url):
@@ -26,17 +26,17 @@ class BasePage:
         return self.wait.until(EC.presence_of_all_elements_located(locator))
 
     @allure.step("Ожидание видимости элемента: {locator}")
-    def wait_for_visible(self, locator, timeout=10):
+    def wait_for_visible(self, locator, timeout=20):
         wait = WebDriverWait(self.driver, timeout)
         return wait.until(EC.visibility_of_element_located(locator))
 
     @allure.step("Ожидание присутствия элемента в DOM: {locator}")
-    def wait_for_presence(self, locator, timeout=10):
+    def wait_for_presence(self, locator, timeout=20):
         wait = WebDriverWait(self.driver, timeout)
         return wait.until(EC.presence_of_element_located(locator))
 
     @allure.step("Ожидание исчезновения элемента: {locator}")
-    def wait_for_invisibility(self, locator, timeout=10):
+    def wait_for_invisibility(self, locator, timeout=20):
         wait = WebDriverWait(self.driver, timeout)
         return wait.until(EC.invisibility_of_element_located(locator))
 
@@ -45,7 +45,7 @@ class BasePage:
         return WebDriverWait(self.driver, timeout).until(condition)
 
     @allure.step("Ожидание изменения текста в элементе: {locator}")
-    def wait_until_text_not_present(self, locator, text, timeout=15):
+    def wait_until_text_not_present(self, locator, text, timeout=20):
         return WebDriverWait(self.driver, timeout).until_not(
             EC.text_to_be_present_in_element(locator, text)
         )
@@ -56,7 +56,7 @@ class BasePage:
         element.click()
 
     @allure.step("JS Клик по элементу: {locator}")
-    def click_js(self, locator, timeout=15):
+    def click_js(self, locator, timeout=20):
         element = WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
         self.driver.execute_script("arguments[0].click();", element)
 
@@ -89,3 +89,10 @@ class BasePage:
     @allure.step("Обновление страницы")
     def refresh_page(self):
         self.driver.refresh()
+
+    ###
+    # Добавка
+    @allure.step("Получить текст элемента с переданным локатором")
+    def get_text_of_element(self, locator, timeout=20):
+        element = self.wait_for_element(locator, timeout)
+        return element.text    
