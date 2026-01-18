@@ -69,6 +69,7 @@ class TestOrderFeed:
         main_page.click_order_feed()
         # Просто ждем загрузки страницы (видимости счётчика)
         order_page.wait_for_order_feed_loaded()
+        order_page.wait_for_today_counter_to_change(initial_today)
         # Считываем значение сразу после загрузки
         final_today = order_page.get_today_orders_counter()
 
