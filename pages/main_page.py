@@ -78,4 +78,3 @@ class MainPage(BasePage):
     @allure.step("Ожидание закрытия модального окна")
     def wait_for_modal_closed(self):
         self.wait_for_invisibility(MainPageLocators.MODAL_OVERLAY, timeout=20)
-
