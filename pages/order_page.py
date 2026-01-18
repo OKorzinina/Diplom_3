@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from .base_page import BasePage
 from locators.order_page_locators import OrderPageLocators
 
+
 class OrderPage(BasePage):
     locators = OrderPageLocators
 
@@ -26,9 +27,10 @@ class OrderPage(BasePage):
     @allure.step("Ожидание изменения счетчика 'Выполнено за все время'")
     def wait_for_total_counter_to_change(self, initial_value):
         self.wait_until_condition(lambda driver: self.get_total_orders_counter() != initial_value)
-
+ #был скрыт
     @allure.step("Ожидание изменения счетчика 'Выполнено за сегодня'")
     def wait_for_today_counter_to_change(self, initial_value):
+        #self.wait_until_condition(lambda driver: self.get_today_orders_counter() != initial_value)
         self.wait_until_condition(lambda driver: self.get_today_orders_counter() != initial_value)
 
     @allure.step("Проверить наличие заказа {order_number} в разделе 'В работе'")
