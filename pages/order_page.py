@@ -14,13 +14,13 @@ class OrderPage(BasePage):
 
     @allure.step("Получить счетчик 'Выполнено за все время'")
     def get_total_orders_counter(self):
-        element = self.find_element(self.locators.TOTAL_ORDERS_COUNTER)
+        element = self.find_element(self.locators.TOTAL_ORDERS_COUNTER_FEED)
         count = "".join(filter(str.isdigit, element.text))
         return int(count)
 
     @allure.step("Получить счетчик 'Выполнено за сегодня'")
     def get_today_orders_counter(self):
-        element = self.find_element(self.locators.TODAY_ORDERS_COUNTER)
+        element = self.find_element(self.locators.TODAY_ORDERS_COUNTER_FEED)
         count = "".join(filter(str.isdigit, element.text))
         return int(count)
 

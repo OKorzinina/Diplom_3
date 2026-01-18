@@ -15,12 +15,12 @@ class OrderPageLocators:
     ANY_H1 = (By.XPATH, "//h1")
 
     # Счетчик "Выполнено за все время" - ищем рядом с текстом
-    TOTAL_ORDERS_COUNTER = (By.XPATH, "//p[contains(., 'Выполнено за все время')]/following-sibling::p")
+    TOTAL_ORDERS_COUNTER_FEED = (By.XPATH, "//p[contains(., 'Выполнено за все время')]/following-sibling::p")  #FEED добавлено
     #TOTAL_ORDERS_COUNTER = (By.XPATH, "//p[text()='Выполнено за все время']/following-sibling::p[1]")
     
     # Счетчик "Выполнено за сегодня"
     #TODAY_ORDERS_COUNTER = (By.XPATH, "//p[text()='Выполнено за сегодня']/following-sibling::p[1]")
-    TODAY_ORDERS_COUNTER = (By.XPATH, "//p[contains(., 'Выполнено за сегодня')]/following-sibling::p")
+    TODAY_ORDERS_COUNTER_FEED = (By.XPATH, "//p[contains(., 'Выполнено за сегодня')]/following-sibling::p") #FEED добавлено
 
     
     # Список заказов "В работе"
