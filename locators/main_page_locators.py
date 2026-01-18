@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 class MainPageLocators:
     CONSTRUCTOR_BUTTON = (By.XPATH, "//p[contains(text(), 'Конструктор')]")
     #ORDER_FEED_BUTTON = (By.XPATH, "//p[contains(text(), 'Лента Заказов')]")
+    ORDER_FEED_BUTTON = (By.XPATH, "//p[contains(text(), 'Лента Заказов')]/parent::a")
     FLUORESCENT_BUN = (By.XPATH, "//img[@alt='Флюоресцентная булка R2-D3']")
     INGREDIENT_COUNTER = (By.XPATH, "//p[contains(@class, 'counter')]")
     INGREDIENT_MODAL = (By.XPATH, "//div[contains(@class, 'Modal_modal')]")
@@ -32,4 +33,4 @@ class MainPageLocators:
     ORDER_NUMBER_DISPLAY = (By.CSS_SELECTOR, ".entities_main__m_e_D") 
 
    
-    ORDER_FEED_BUTTON = (By.XPATH, "//p[contains(text(), 'Лента Заказов')]/parent::a")
+   
