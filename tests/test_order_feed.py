@@ -50,41 +50,33 @@ class TestOrderFeed:
         auth_page.open()
         auth_page.login(email, password)
 
-        # 1. Получаем начальное значение счетчика
+        # 1. Получаем начальное значение счётчика
         main_page.click_order_feed()
         order_page.wait_for_order_feed_loaded()
-        # Достаточно просто дождаться видимости счетчика и забрать текст
         initial_today = order_page.get_today_orders_counter()
 
-        # 2. Создаем новый заказ
+        # 2. Создаем заказ через UI
         main_page.click_constructor()
         main_page.drag_ingredient_to_constructor()
         main_page.click_make_order_button()
 
-        # Важно дождаться появления номера заказа, чтобы убедиться, что бэкенд его обработал
+        # 3. Ждем появления номера заказа 
         main_page.wait_for_order_id_visible()
         main_page.close_modal()
         main_page.wait_for_modal_closed()
 
-        # 3. Переходим в ленту заказов и проверяем счетчик
+        # 4. Переходим в ленту заказов
         main_page.click_order_feed()
-
-        # Ждем загрузки ленты (внутри этого метода должно быть ожидание видимости элементов)
+        # Просто ждем загрузки страницы (видимости счётчика)
         order_page.wait_for_order_feed_loaded()
-
-        # Просто считываем новое значение
+        # Считываем значение сразу после загрузки
         final_today = order_page.get_today_orders_counter()
 
         # Проверяем увеличение
         assert final_today > initial_today, \
             f"Счетчик не увеличился! Было: {initial_today}, стало: {final_today}"
 
-
-
-
-    
-
-    
+     
 
     @allure.title('После оформления заказа его номер появляется в разделе «В работе»')
     def test_order_number_appears_in_progress(self, driver, creating_user):
