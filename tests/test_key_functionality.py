@@ -30,7 +30,6 @@ class TestKeyFunctionality:
         main_page.open()
         main_page.click_ingredient()
         modal_visible = main_page.is_modal_visible()
-        #assert modal_visible is True
         assert main_page.is_modal_visible()
 
     @allure.title("Всплывающее окно закрывается кликом по крестику")
@@ -51,12 +50,9 @@ class TestKeyFunctionality:
 
         # Получаем начальное значение (метод возвращает int)
         initial_counter = main_page.get_ingredient_counter()
-
         # Добавляем ингредиент
         main_page.drag_ingredient_to_constructor()
-
         # Получаем новое значение
         new_counter = main_page.get_ingredient_counter()
-
         # Точная проверка: счетчик увеличился ровно на 2 (так как булки добавляются по 2 шт сразу)
         assert new_counter == initial_counter + 2
