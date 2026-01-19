@@ -9,9 +9,13 @@ class BasePage:
         self.driver = driver
         self.wait = WebDriverWait(driver, 20)
 
-    @allure.step("Переход по URL: {url}")
+### ДОБАВКА
+
+    @allure.step('Переход по URL: {url}')
     def go_to_url(self, url):
         self.driver.get(url)
+
+###
 
     @allure.step("Ожидание, что URL содержит: {text}")
     def wait_for_url_contains(self, text, timeout=20):
