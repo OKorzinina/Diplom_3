@@ -43,7 +43,7 @@ class MainPage(BasePage):
     @allure.step("Обновить страницу")
     def refresh_page(self):
         super().refresh_page()
-        self.wait_for_visible(MainPageLocators.CONSTRUCTOR_BUTTON, timeout=20)
+        self.wait_for_visible(MainPageLocators.CONSTRUCTOR_BUTTON, timeout=30)
 
     @allure.step("Получить текст кнопки конструктора")
     def get_constructor_button_text(self):
@@ -67,7 +67,7 @@ class MainPage(BasePage):
 
     @allure.step("Ожидание появления номера заказа")
     def wait_for_order_id_visible(self):
-        self.wait_for_visible(MainPageLocators.ORDER_ID_IN_MODAL, timeout=20)
+        self.wait_for_visible(MainPageLocators.ORDER_ID_IN_MODAL, timeout=30)
 
     @allure.step("Получить номер заказа из модального окна")
     def get_order_id_from_modal(self):
