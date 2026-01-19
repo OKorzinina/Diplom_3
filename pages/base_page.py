@@ -9,13 +9,9 @@ class BasePage:
         self.driver = driver
         self.wait = WebDriverWait(driver, 20)
 
-### ДОБАВКА
-
     @allure.step('Переход по URL: {url}')
     def go_to_url(self, url):
         self.driver.get(url)
-
-###
 
     @allure.step("Ожидание, что URL содержит: {text}")
     def wait_for_url_contains(self, text, timeout=20):
@@ -94,8 +90,7 @@ class BasePage:
     def refresh_page(self):
         self.driver.refresh()
 
-    ###
-    # Добавка
+    
     @allure.step("Получить текст элемента с переданным локатором")
     def get_text_of_element(self, locator, timeout=20):
         element = self.wait_for_element(locator, timeout)
