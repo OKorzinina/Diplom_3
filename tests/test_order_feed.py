@@ -17,11 +17,10 @@ class TestOrderFeed:
         auth_page.open()
         auth_page.login(email, password)
 
-# 1. Получаем начальное значение (заходим в ленту)
+# 1. Получаем начальное значение 
         main_page.click_order_feed()
         order_page.wait_for_order_feed_loaded()
-        #driver.get(Urls.ORDER_FEED_URL) #ДОБАВИЛА
-        order_page.get_to_go_feed() #ЗАМЕНА driver 
+        order_page.get_to_go_feed()  
         initial_total = order_page.get_total_orders_counter()
 
 # 2. Создаем заказ через UI
@@ -38,9 +37,7 @@ class TestOrderFeed:
         main_page.click_order_feed()
         order_page.wait_for_order_feed_loaded()
         order_page.wait_for_total_counter_to_change(initial_total)
-
-        #driver.get(Urls.ORDER_FEED_URL) #ДОБАВИЛА
-        order_page.get_to_go_feed() #ЗАМЕНА driver
+        order_page.get_to_go_feed() 
         final_total = order_page.get_total_orders_counter()
         assert final_total > initial_total
 
@@ -56,18 +53,16 @@ class TestOrderFeed:
         auth_page.open()
         auth_page.login(email, password)
 
-        # 1. Получаем начальное значение счётчика
+        # 1. Получаем начальное значение 
         main_page.click_order_feed()
         order_page.wait_for_order_feed_loaded()
-        #driver.get(Urls.ORDER_FEED_URL)
-        order_page.get_to_go_feed() #ЗАМЕНА driver
+        order_page.get_to_go_feed() 
         initial_today = order_page.get_today_orders_counter()
 
         # 2. Создаем заказ через UI
         main_page.click_constructor()
         main_page.drag_ingredient_to_constructor()
         main_page.click_make_order_button()
-
 
         # 3. Ждем появления номера заказа 
         main_page.wait_for_order_id_visible()
@@ -78,16 +73,11 @@ class TestOrderFeed:
         main_page.click_order_feed()
         order_page.wait_for_order_feed_loaded()
         order_page.wait_for_today_counter_to_change(initial_today)
-
-        #driver.get(Urls.ORDER_FEED_URL)
-        order_page.get_to_go_feed() #ЗАМЕНА driver
+        order_page.get_to_go_feed() 
         final_today = order_page.get_today_orders_counter()
-
-        # Проверяем увеличение
         assert final_today > initial_today
 
      
-
     @allure.title('После оформления заказа его номер появляется в разделе «В работе»')
     def test_order_number_appears_in_progress(self, driver, creating_user):
         main_page = MainPage(driver)
