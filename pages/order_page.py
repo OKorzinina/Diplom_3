@@ -12,18 +12,13 @@ class OrderPage(BasePage):
         self.wait_for_url_contains('/feed')
         self.wait_for_visible(self.locators.TOTAL_ORDERS_COUNTER, timeout=25)
 
-
     @allure.step("Перейти на ленту заказов")     
     def get_to_feed_page(self):
         self.wait_for_url_contains(Urls.ORDER_FEED_URL)
         
-#### Добавка
     @allure.step('Открыть страницу ленты заказов по прямой ссылке')
     def get_to_go_feed(self):
         self.go_to_url(Urls.ORDER_FEED_URL)
-
-###
-
 
     @allure.step("Получить счетчик 'Выполнено за все время'")
     def get_total_orders_counter(self):
@@ -43,7 +38,6 @@ class OrderPage(BasePage):
  
     @allure.step("Ожидание изменения счетчика 'Выполнено за сегодня'")
     def wait_for_today_counter_to_change(self, initial_value):
-        #self.wait_until_condition(lambda driver: self.get_today_orders_counter() != initial_value)
         self.wait_until_condition(lambda driver: self.get_today_orders_counter() != initial_value)
 
     @allure.step("Проверить наличие заказа {order_number} в разделе 'В работе'")
